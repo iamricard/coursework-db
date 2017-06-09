@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./src/sh/00-fetch_csv_files
+./src/sh/01-load_db
