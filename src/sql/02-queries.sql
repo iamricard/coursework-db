@@ -93,9 +93,40 @@ LIMIT 1;
 -- sertraline (Lustral)
 
 SELECT period,
-       count(*)
+       COUNT(*) AS 'SSRI prescriptions'
 FROM ssriprescriptions
 GROUP BY period;
 
+-- +--------+--------------------+
+-- | period | SSRI prescriptions |
+-- +--------+--------------------+
+-- | 201601 |              99797 |
+-- | 201602 |              99311 |
+-- +--------+--------------------+
+-- There were 486 less SSRI prescriptions in February than in January.
+
 -- f) Visualise the top 10 practices by number of metformin prescriptions
 --    throughout the entire period.
+
+SELECT COUNT(*) AS prescribed,
+       practicename
+FROM metforminprescriptions
+INNER JOIN practices ON id = practiceid
+GROUP BY practiceid
+ORDER BY prescribed DESC
+LIMIT 10;
+
+-- +------------+----------------------------------+
+-- | prescribed | practicename                     |
+-- +------------+----------------------------------+
+-- |         45 | DR GHAFOOR & ABBASI              |
+-- |         44 | PARADISE MEDICAL CENTRE          |
+-- |         44 | SHANTI MEDICAL CENTRE            |
+-- |         40 | MIDLANDS MEDICAL PARTNERSHIP     |
+-- |         39 | BUXTED MEDICAL CENTRE            |
+-- |         39 | WHITE HORSE HEALTH CENTRE        |
+-- |         38 | EAGLE HOUSE SURGERY              |
+-- |         38 | OLD TRAFFORD MEDICAL PRACTICE    |
+-- |         38 | HALL GREEN HEALTH                |
+-- |         37 | EAST NORWICH MEDICAL PARTNERSHIP |
+-- +------------+----------------------------------+

@@ -4,7 +4,7 @@ USE prescriptionsdb;
 CREATE OR REPLACE VIEW bb AS
 SELECT bnfcodesub
 FROM chemicals
-WHERE chemicalname regexp 'atenolol|bisoprolol|carvedilol|metoprolol|nebivolol|propranolol';
+WHERE chemicalname REGEXP 'atenolol|bisoprolol|carvedilol|metoprolol|nebivolol|propranolol';
 
 
 CREATE OR REPLACE VIEW bbprescriptions AS
@@ -24,7 +24,7 @@ GROUP BY practiceid;
 
 
 CREATE OR REPLACE VIEW ppgp AS
-SELECT count(*) AS prescriptioncount,
+SELECT COUNT(*) AS prescriptioncount,
        practiceid
 FROM prescriptions
 GROUP BY practiceid
@@ -32,7 +32,7 @@ ORDER BY prescriptioncount DESC;
 
 
 CREATE OR REPLACE VIEW ppc AS
-SELECT count(*) AS dispensedamount,
+SELECT COUNT(*) AS dispensedamount,
        substring(bnfcode, 1, 9) AS bnfcodesub
 FROM prescriptions
 GROUP BY substring(bnfcode, 1, 9);
@@ -48,7 +48,7 @@ GROUP BY practiceid;
 CREATE OR REPLACE VIEW ssri AS
 SELECT bnfcodesub
 FROM chemicals
-WHERE chemicalname regexp 'citalopram|dapoxetine|escitalopram|fluoxetine|fluvoxamine|paroxetine|sertraline';
+WHERE chemicalname REGEXP 'citalopram|dapoxetine|escitalopram|fluoxetine|fluvoxamine|paroxetine|sertraline';
 
 
 CREATE OR REPLACE VIEW ssriprescriptions AS
@@ -58,3 +58,18 @@ SELECT practiceid,
        bnfcodesub
 FROM prescriptions
 INNER JOIN ssri ON prescriptions.bnfcode LIKE concat(ssri.bnfcodesub, '%');
+
+
+CREATE OR REPLACE VIEW metformin AS
+SELECT bnfcodesub
+FROM chemicals
+WHERE chemicalname LIKE '%metformin%';
+
+
+CREATE OR REPLACE VIEW metforminprescriptions AS
+SELECT practiceid,
+       quantity,
+       period,
+       bnfcodesub
+FROM prescriptions
+INNER JOIN metformin ON prescriptions.bnfcode LIKE concat(metformin.bnfcodesub, '%');
