@@ -18,3 +18,18 @@ FROM bbprescriptions
 LEFT JOIN practices
 ON bbprescriptions.practiceid = practices.id
 GROUP BY practiceid;
+
+CREATE OR REPLACE VIEW ppgp AS
+SELECT COUNT(*) AS prescriptioncount, practiceid
+FROM prescriptions
+GROUP BY practiceid
+ORDER BY prescriptioncount DESC;
+
+CREATE OR REPLACE VIEW ppc AS
+SELECT
+  COUNT(*) AS dispensedamount,
+  SUBSTRING(bnfcode, 1, 9) AS bnfcodesub
+FROM
+  prescriptions
+GROUP BY
+  SUBSTRING(bnfcode, 1, 9);

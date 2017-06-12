@@ -16,8 +16,12 @@ WHERE
   postcode
 LIKE
   'N17%';
--- There are 8 practices in the N17 postcode.
--- There are 58118391 registered patients in the N17 postcode.
+
+-- +------------------+-----------------+
+-- | practices in n17 | patients in n17 |
+-- +------------------+-----------------+
+-- |                7 | 49358           |
+-- +------------------+-----------------+
 
 -- b) Which practice prescribed the most beta blockers per registered patients
 --    in total over the two month period?
@@ -32,7 +36,7 @@ LIKE
 
 SELECT
   bbpgp.practiceid AS 'practice id',
-  bbpgp.total / gppatients.patientcount AS 'betablockers per patient',
+  bbpgp.total / gppatients.patientcount AS betablockersperpatient,
   bbpgp.practicename AS 'practice name'
 FROM
   bbpgp
@@ -41,10 +45,35 @@ INNER JOIN
 ON
   gppatients.practiceid = bbpgp.practiceid
 ORDER BY
-  'Betablockers per patient'
+  betablockersperpatient DESC
 LIMIT 1;
 
+-- +-------------+------------------------+------------------------+
+-- | practice id | betablockersperpatient | practice name          |
+-- +-------------+------------------------+------------------------+
+-- | G82651      | 161.0000               | BURRSWOOD NURSING HOME |
+-- +-------------+------------------------+------------------------+
+
 -- c) Which was the most prescribed medication across all practices?
+
+SELECT
+  chemicalname,
+  dispensedamount
+FROM
+  chemicals
+INNER JOIN
+  ppc
+ON
+  ppc.bnfcodesub = chemicals.bnfcodesub
+ORDER BY
+  dispensedamount DESC
+LIMIT 1;
+
+-- +----------------+-----------------+
+-- | chemicalname   | dispensedamount |
+-- +----------------+-----------------+
+-- | Colecalciferol |          280495 |
+-- +----------------+-----------------+
 
 -- d) Which practice spent the most and the least per patient?
 
