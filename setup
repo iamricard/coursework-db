@@ -1,4 +1,116 @@
 #!/bin/bash
 
-./src/sh/00-fetch_csv_files
-./src/sh/01-load_db
+function fetch_chemicals() {
+  cd data
+  curl -s -o chemicals-01-2017.csv \
+    http://datagov.ic.nhs.uk/presentation/2017_01_January/T201701CHEM+SUBS.CSV
+  curl -s -o chemicals-02-2017.csv \
+    http://datagov.ic.nhs.uk/presentation/2017_02_February/T201702CHEM+SUBS.CSV
+
+  echo "Dowloaded chemicals csv files."
+  echo "Concatenating chemicals files."
+
+  cp chemicals-01-2017.csv chemicals.csv
+  tail -n+2 chemicals-02-2017.csv >> chemicals.csv
+
+  echo "Concatenated chemicals files."
+
+  rm -rf chemicals-{01,02}-2017.csv
+  cd ..
+}
+
+function fetch_practices() {
+  cd data
+  curl -s -o practices-01-2017.csv \
+    http://datagov.ic.nhs.uk/presentation/2017_01_January/T201701ADDR+BNFT.CSV
+  curl -s -o practices-02-2017.csv \
+    http://datagov.ic.nhs.uk/presentation/2017_02_February/T201702ADDR+BNFT.CSV
+
+  echo "Dowloaded practices csv files."
+  echo "Concatenating practices files."
+
+  cp practices-01-2017.csv practices.csv
+  cat practices-02-2017.csv >> practices.csv
+
+  echo "Concatenated prescriptions files."
+
+  rm -rf practices-{01,02}-2017.csv
+  cd ..
+}
+
+function fetch_prescriptions() {
+  cd data
+  curl -s -o prescriptions-01-2017.csv \
+    http://datagov.ic.nhs.uk/presentation/2017_01_January/T201701PDPI+BNFT.CSV
+  curl -s -o prescriptions-02-2017.csv \
+    http://datagov.ic.nhs.uk/presentation/2017_02_February/T201702PDPI+BNFT.CSV
+
+  echo "Dowloaded prescriptions csv files."
+  echo "Concatenating prescriptions files."
+
+  cp prescriptions-01-2017.csv prescriptions.csv
+  tail -n+2 prescriptions-02-2017.csv >> prescriptions.csv
+
+  echo "Concatenated prescriptions files."
+  echo "Adding index column to prescriptions."
+
+  rm -rf prescriptions-{01,02}-2017.csv
+
+  awk -v OFS=',' '
+    NR == 1 {print "ID", $0; next}
+    {print (NR-1), $0}
+  ' prescriptions.csv > tmp && mv tmp prescriptions.csv
+
+  "Done fetching prescriptions."
+
+  cd ..
+}
+
+function fetch_gppatients() {
+  cd data
+  curl -s -o gppatients.csv \
+    http://www.content.digital.nhs.uk/catalogue/PUB23139/gp-reg-patients-prac-quin-age.csv
+  cd ..
+}
+
+checksum_chemicals=5bc5ab1c0cde2340cfca9fdc2059023d
+checksum_practices=3545e17313c76501e3afea8de4002882
+checksum_prescriptions=b49ee2ccd2ef28d910c52a87371a5830
+checksum_gppatients=64c662e3bd1c983afe560f7aa644c56a
+
+FILES="
+chemicals
+practices
+prescriptions
+gppatients
+"
+
+mkdir -p data
+
+for f in $FILES
+do
+  if [ ! -f "data/$f.csv" ]
+  then
+    echo ""
+    echo "data/$f.csv - NOT FOUND. Downloading."
+    echo "Depending on the size of the file(s) this might take a while."
+    eval "fetch_$f"
+  else
+    file_checksum=$(md5 -q data/$f.csv)
+    checksum_name="checksum_$f"
+    correct_checksum=${!checksum_name}
+
+    if [ $file_checksum == $correct_checksum ]
+    then
+      echo ""
+      echo "data/$f.csv checksum - OK. Skipping download."
+    else
+      echo ""
+      echo "data/$f.csv checksum - NOT OK. Re-downloading."
+      echo "Depending on the size of the file(s) this might take a while."
+      eval "fetch_$f"
+    fi
+  fi
+done
+
+cat src/sql/0{0-setup,1-views}.sql | mysql -u root -p

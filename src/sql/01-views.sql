@@ -1,3 +1,5 @@
+USE prescriptionsdb;
+
 CREATE OR REPLACE VIEW bb AS
 SELECT bnfcodesub FROM chemicals
 WHERE chemicalname
