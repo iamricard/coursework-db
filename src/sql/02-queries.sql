@@ -83,6 +83,19 @@ LIMIT 1;
 
 -- e) What was the difference in selective serotonin reuptake inhibitor
 --    prescriptions between January and February?
+-- There are currently seven SSRIs prescribed in the UK:
+-- citalopram (Cipramil)
+-- dapoxetine (Priligy)
+-- escitalopram (Cipralex)
+-- fluoxetine (Prozac or Oxactin)
+-- fluvoxamine (Faverin)
+-- paroxetine (Seroxat)
+-- sertraline (Lustral)
+
+SELECT period,
+       count(*)
+FROM ssriprescriptions
+GROUP BY period;
 
 -- f) Visualise the top 10 practices by number of metformin prescriptions
 --    throughout the entire period.
