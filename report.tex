@@ -24,7 +24,7 @@
 \PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
 \usepackage[unicode=true]{hyperref}
 \hypersetup{
-            pdftitle={Drug prescription analysis by NHS GPs},
+            pdftitle={Drug prescription analysis by NHS practices},
             pdfauthor={Ricard Solé Casas},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -103,7 +103,7 @@
 \usepackage{pgfplotstable}
 \usepackage{bchart}
 
-\title{Drug prescription analysis by NHS GPs}
+\title{Drug prescription analysis by NHS practices}
 \author{Ricard Solé Casas}
 \providecommand{\institute}[1]{}
 \institute{Google UK \and Ada National College for Digital Skills}
@@ -116,8 +116,8 @@
 
 \section*{Summary}
 
-This report contains a brief analysis on drug prescription by NHS GPs
-during the period of January and February of 2016.
+This report contains a brief analysis on drug prescription by NHS
+practices during the period of January and February of 2016.
 
 \section*{Declaration}
 
@@ -140,6 +140,56 @@ would also like to thank all of you who also helped me get here.
 \tableofcontents
 }
 \chapter{Introduction}\label{introduction}
+
+\section{Goal}\label{goal}
+
+The goal of this analysis is to get a better grasp on drug prescriptions
+per NHS practices and expenditure per practice over the months of
+January and February of the year 2016.
+
+\section{Tasks}\label{tasks}
+
+We will download and load CSV files containing data for registered
+chemicals, practices, prescriptions and patients over the specified time
+periods.
+
+The analysis will cover:
+
+\begin{itemize}
+\tightlist
+\item
+  The amount of practices in a specific area, along with its registered
+  patients.
+\item
+  Prescription amounts for some specific medicines/chemicals.
+\item
+  Estimated expenditure per practice in prescriptions.
+\end{itemize}
+
+\section{Further materials and
+remarks}\label{further-materials-and-remarks}
+
+The entire source code for this report in markdown and latex formats,
+and the SQL queries to load data, create views and analyze the data that
+are use in the report are publicly published on
+\href{https://github.com/rcsole/coursework-db}{Github} under the
+\href{https://choosealicense.com/licenses/mit/}{MIT License}.
+
+\subsection{Running}\label{running}
+
+A utility script is provided in the Github project to \texttt{setup} and
+\texttt{run-queries} on your local machine:
+
+\begin{quote}
+\textbf{Disclaimer:} \emph{Assumes bash CLI, MariaDB w/ password and a
+working internet connection.}
+\end{quote}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{./setup} \KeywordTok{&&} \ExtensionTok{./run-queries}
+\end{Highlighting}
+\end{Shaded}
 
 \chapter{Starting up}\label{starting-up}
 
@@ -252,7 +302,7 @@ future queries.
 \chapter{Setting up our data}\label{setting-up-our-data}
 
 As described in the previous chapter we'll detail step by step how to
-load the data from the CSV to the MariaDB instance, and into
+load the data from the CSV to our \texttt{MariaDB} instance, and into
 \texttt{prescriptionsdb}.
 
 \section{Fetching the data}\label{fetching-the-data}
@@ -306,8 +356,8 @@ identified as beta-blockers.
 
 \subsection{Prescriptions-per-x}\label{prescriptions-per-x}
 
-Other tasks ask for common patterns such as prescriptions/gp, and
-prescriptions/chemical.
+Other tasks ask for common patterns such as prescriptions per gp, and
+prescriptions per chemical.
 
 \inputminted[firstline=26,lastline=38]{sql}{src/sql/01-views.sql}
 
@@ -326,12 +376,167 @@ That's all there is to model our data. To recap we have:
 \begin{itemize}
 \tightlist
 \item
-  Downloaded the CSV files into a data folder using cURL.
+  Downloaded the CSV files into a data folder using \texttt{cURL}.
 \item
   Loaded the CSV files using \texttt{LOAD\ DATA}
 \item
   Created some \texttt{VIEW}s that we'll be using later to abstract
   complexity from our queries.
+\end{itemize}
+
+\chapter{Data Analysis}\label{data-analysis}
+
+\section{Practices in a particular
+area}\label{practices-in-a-particular-area}
+
+We are particularly interested in \emph{how} many GPs ---and how many
+registered patients in said GPs--- there are in a specific area covered
+by the NHS ---in N17.
+
+Getting the amount of GPs is an easy task to accomplish with the
+provided data. From the \texttt{practices} table we want to retrieve the
+rows whose \texttt{postcode} column start with \texttt{N17}. However, we
+also want the patients from that area. That's in the \texttt{gppatients}
+table which relates to \texttt{practices} through the
+\texttt{practiceid} column. In this case we will need a
+\texttt{LEFT\ JOIN} when combining both tables. The reason we need it to
+be \texttt{LEFT} is because we might find some \texttt{practices} which
+do not have any registered patients but \textbf{are} in the \emph{N17}
+postcode.
+
+\inputminted[firstline=5,lastline=15]{sql}{src/sql/02-queries.sql}
+
+From the result of the query we can conclude there are \textbf{7
+practices in N17} and a total of \textbf{49,358} patients are registered
+in that postcode.
+
+\section{Beta-blockers}\label{beta-blockers-1}
+
+Taking advantage of the views created in section 3.3.1 the query to find
+the GP which prescribed the most beta-blockers turns out to be a rather
+simple \texttt{JOIN} from that \texttt{VIEW} to the \texttt{gppatients}
+table:
+
+\inputminted[firstline=27,lastline=39]{sql}{src/sql/02-queries.sql}
+
+The practice that has prescribed the most beta-blockers per patient
+registered (in that specific practice) is \emph{Burrswood Nursing Home},
+ID \texttt{G82651}, prescribing 161 beta-blockers per patient.
+
+\section{Prescriptions per
+medication}\label{prescriptions-per-medication}
+
+The relevant \texttt{VIEW} here is \texttt{ppc}. It contains how many
+prescriptions there are per chemical. Doing a simple \texttt{JOIN} with
+the \texttt{chemicals} table, sorting it by the dispensed amount and
+\texttt{LIMIT}ing it to \texttt{1} result:
+
+\begin{quote}
+\textbf{Disclaimer}: \emph{The assumption is we are looking for the
+chemical that's been dispensed most often, not necessarily the one
+that's been dispensed the most as far as actual quantity goes. With the
+data we could gather that's a rather difficult task (more quantity does
+not equal more substance).}
+\end{quote}
+
+\inputminted[firstline=42,lastline=53]{sql}{src/sql/02-queries.sql}
+
+The most prescribed medication in January + February of 2016 was
+\textbf{Colecalciferol}, which was prescribed \textbf{280495} times.
+
+\section{Expenditure per practice}\label{expenditure-per-practice}
+
+Like in every other query we also have a relevant view here,
+\texttt{spentpergp}. All we need to do is join \texttt{spentpergp} with
+\texttt{practices} to get the name, and we are done! \texttt{spentpergp}
+is the result of \texttt{SUM}ing all \texttt{prescriptions}
+\texttt{GROUP}ed \texttt{BY} their \texttt{practiceid}:
+
+\inputminted[firstline=55,lastline=80]{sql}{src/sql/02-queries.sql}
+
+The \textbf{biggest spender} was \textbf{Midlands Medical Partnership}
+at \textbf{1,638,640.13£} per patient. The \textbf{cheapest practice}
+was \textbf{Cri Bury Recovery Services} at \textbf{0.17£} per patient.
+
+\section{SSRI prescriptions change}\label{ssri-prescriptions-change}
+
+There are similar \texttt{VIEW}s for
+\href{http://www.nhs.uk/conditions/SSRIs-(selective-serotonin-reuptake-inhibitors)/Pages/Introduction.aspx}{SSRI}
+as there were for beta-blocker. To find the difference in amount of
+times SSRIs have been prescribed between January and February we simply
+\texttt{COUNT(*)} and \texttt{GROUP\ BY} the \texttt{period} when they
+were prescribed.
+
+To know what qualifies as SSRI we've referred to the NHS website. The
+relevant excerpt:
+
+\begin{itemize}
+\tightlist
+\item
+  Types of SSRIs
+
+  \begin{itemize}
+  \tightlist
+  \item
+    citalopram
+  \item
+    dapoxetine
+  \item
+    escitalopram
+  \item
+    fluoxetine
+  \item
+    fluvoxamine
+  \item
+    paroxetine
+  \item
+    sertraline
+  \end{itemize}
+\end{itemize}
+
+\inputminted[firstline=92,lastline=102]{sql}{src/sql/02-queries.sql}
+
+\section{Metformin per practice}\label{metformin-per-practice}
+
+You guessed it right, we are using \texttt{VIEW}s! In this case
+\texttt{metforminprescriptions} which builds on \texttt{metformin}. The
+latter gets all the \texttt{bnfcodesub}s belonging to \texttt{chemicals}
+containing \texttt{metformin}. We use the former to \texttt{JOIN} it
+with \texttt{practices} on the \texttt{practiceid\ =\ id} and
+\texttt{GROUP\ BY} the \texttt{id}, while also \texttt{ORDER}ing
+\texttt{BY} the amount of \texttt{prescriptions} and finally
+\texttt{LIMIT} it to \texttt{10} elements:
+
+\inputminted[firstline=107]{sql}{src/sql/02-queries.sql}
+
+The above comment shows a nicely formatted table of the \textbf{top 10}
+\texttt{practices} per metformin prescribed.
+
+\section{Wrapping up}\label{wrapping-up-2}
+
+This covers all the analysis we are doing on drug prescription by NHS
+practices.
+
+\chapter{Conclusions}\label{conclusions}
+
+\chapter{References}\label{references}
+
+\begin{itemize}
+\item
+  Health and Social Care Information Centre, Prescribing (2015):
+  \emph{General Practice Prescribing Data Frequently Asked Questions}.
+  Available at:
+  http://content.digital.nhs.uk/media/10048/FAQs-Practice-Level-Prescribingpdf/pdf/PLP\_FAQs\_April\_2015.pdf
+\item
+  NHS (2016): \emph{Beta-blockers}. Available at:
+  http://www.nhs.uk/conditions/beta-blockers/pages/introduction.aspx
+\item
+  Wikipedia (2016): \emph{View (SQL)}. Available at:
+  https://en.wikipedia.org/wiki/View\_(SQL)
+\item
+  NHS (2015): \emph{Selective serotonin reuptake inhibitors (SSRIs)}.
+  Available at:
+  http://www.nhs.uk/conditions/SSRIs-(selective-serotonin-reuptake-inhibitors)/Pages/Introduction.aspx
 \end{itemize}
 
 \end{document}

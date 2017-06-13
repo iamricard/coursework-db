@@ -3,12 +3,13 @@ OUT_FORMAT = latex
 IN_FORMAT = markdown
 HEADER = src/report/header.tex
 
-.PHONY: all clean
+.PHONY: all clean report.tex pdf
 
-all: $(TARGET)
+all: $(TARGET) pdf
 
 $(TARGET): src/report/*.yaml src/report/*.md
 	pandoc \
+	-S \
 	-H $(HEADER) \
 	-f $(IN_FORMAT) \
 	-t $(OUT_FORMAT) \

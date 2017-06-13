@@ -15,7 +15,7 @@ INNER JOIN bb ON prescriptions.bnfcode LIKE concat(bb.bnfcodesub, '%');
 
 
 CREATE OR REPLACE VIEW bbpgp AS
-SELECT sum(quantity) AS total,
+SELECT SUM(quantity) AS total,
        practiceid,
        practices.practicename
 FROM bbprescriptions
@@ -39,7 +39,7 @@ GROUP BY substring(bnfcode, 1, 9);
 
 
 CREATE OR REPLACE VIEW spentpergp AS
-SELECT sum(actualcost) AS spent,
+SELECT SUM(actualcost) AS spent,
        practiceid
 FROM prescriptions
 GROUP BY practiceid;

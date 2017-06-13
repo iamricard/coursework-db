@@ -7,6 +7,7 @@ SELECT COUNT(*) AS 'practices in n17',
 FROM practices
 LEFT JOIN gppatients ON gppatients.practiceid = practices.id
 WHERE postcode LIKE 'N17%';
+
 -- +------------------+-----------------+
 -- | practices in n17 | patients in n17 |
 -- +------------------+-----------------+
@@ -59,6 +60,11 @@ INNER JOIN practices ON id = practiceid
 ORDER BY spent DESC
 LIMIT 1;
 
+-- +------------------------------+--------------------+
+-- | practicename                 | spent              |
+-- +------------------------------+--------------------+
+-- | MIDLANDS MEDICAL PARTNERSHIP | 1638640.1302093118 |
+-- +------------------------------+--------------------+
 
 SELECT practicename,
        spent
@@ -67,13 +73,6 @@ INNER JOIN practices ON id = practiceid
 ORDER BY spent ASC
 LIMIT 1;
 
--- BIGGEST SPENDER
--- +------------------------------+--------------------+
--- | practicename                 | spent              |
--- +------------------------------+--------------------+
--- | MIDLANDS MEDICAL PARTNERSHIP | 1638640.1302093118 |
--- +------------------------------+--------------------+
--- CHEAPEST PEOPLE
 -- +------------------------------+---------------------+
 -- | practicename                 | spent               |
 -- +------------------------------+---------------------+
