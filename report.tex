@@ -99,10 +99,6 @@
 \setmonofont{Hasklig}
 \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase,Ligatures=TeX}
 
-\usepackage{pgfplots}
-\usepackage{pgfplotstable}
-\usepackage{bchart}
-
 \title{Drug prescription analysis by NHS practices}
 \author{Ricard Solé Casas}
 \providecommand{\institute}[1]{}
@@ -346,11 +342,10 @@ documentation website
 \subsection{Beta-blockers}\label{beta-blockers}
 
 One of the first things asked is to identify
-\href{http://www.nhs.uk/conditions/beta-blockers/pages/introduction.aspx}{beta-blocker}
-prescriptions. The NHS Provides with some information in what some
-common beta-blockers are. I found it particularly useful to create a
-view of what prescriptions actually match the chemicals commonly
-identified as beta-blockers.
+\href{http://bit.ly/2reDxBL}{beta-blocker} prescriptions. The NHS
+Provides with some information in what some common beta-blockers are. I
+found it particularly useful to create a view of what prescriptions
+actually match the chemicals commonly identified as beta-blockers.
 
 \inputminted[firstline=4,lastline=23]{sql}{src/sql/01-views.sql}
 
@@ -420,8 +415,9 @@ table:
 \inputminted[firstline=27,lastline=39]{sql}{src/sql/02-queries.sql}
 
 The practice that has prescribed the most beta-blockers per patient
-registered (in that specific practice) is \emph{Burrswood Nursing Home},
-ID \texttt{G82651}, prescribing 161 beta-blockers per patient.
+registered (in that specific practice) is \textbf{Burrswood Nursing
+Home}, ID \textbf{G82651}, prescribing \textbf{161} beta-blockers per
+patient.
 
 \section{Prescriptions per
 medication}\label{prescriptions-per-medication}
@@ -441,7 +437,7 @@ not equal more substance).}
 
 \inputminted[firstline=42,lastline=53]{sql}{src/sql/02-queries.sql}
 
-The most prescribed medication in January + February of 2016 was
+The most prescribed medication in January \& February of 2016 was
 \textbf{Colecalciferol}, which was prescribed \textbf{280495} times.
 
 \section{Expenditure per practice}\label{expenditure-per-practice}
@@ -452,7 +448,7 @@ Like in every other query we also have a relevant view here,
 is the result of \texttt{SUM}ing all \texttt{prescriptions}
 \texttt{GROUP}ed \texttt{BY} their \texttt{practiceid}:
 
-\inputminted[firstline=55,lastline=80]{sql}{src/sql/02-queries.sql}
+\inputminted[firstline=56,lastline=80]{sql}{src/sql/02-queries.sql}
 
 The \textbf{biggest spender} was \textbf{Midlands Medical Partnership}
 at \textbf{1,638,640.13£} per patient. The \textbf{cheapest practice}
@@ -496,6 +492,9 @@ relevant excerpt:
 
 \inputminted[firstline=92,lastline=102]{sql}{src/sql/02-queries.sql}
 
+The difference between February and January is minimal, at only
+\textbf{486} fewer SSRIs prescribed.
+
 \section{Metformin per practice}\label{metformin-per-practice}
 
 You guessed it right, we are using \texttt{VIEW}s! In this case
@@ -517,7 +516,31 @@ The above comment shows a nicely formatted table of the \textbf{top 10}
 This covers all the analysis we are doing on drug prescription by NHS
 practices.
 
-\chapter{Conclusions}\label{conclusions}
+\chapter{Conclusion}\label{conclusion}
+
+There a few takeaways from the analysis:
+
+\begin{itemize}
+\item
+  In order to better understand drug prescription quantity how
+  prescriptions are stored needs to be rethought. It's hard to conclude
+  which medicine has been prescribed more overall, or which practice has
+  prescribed the highest \textbf{actual} amount of {[}insert medicine
+  here{]}. The chemicals do not carry any information regarding dosage
+  in a way that is easily parsable.
+\item
+  There aren't as many patients in \emph{N17} as I expected.
+\item
+  Whatever \emph{beta-blockers} actually are, \emph{Burrswood Nursing
+  Home} must have a lot of people needing them. At a whooping 161 bb/p
+  they are leading the charge on that type of drug.
+\item
+  We can see massive gaps on money spent per patient, it ranges from
+  \emph{0.17£} to over \emph{1M£}.
+\item
+  As far as SSRIs go, the fluctuation between months seems to be minimal
+  (less than 1\%).
+\end{itemize}
 
 \chapter{References}\label{references}
 
@@ -525,18 +548,15 @@ practices.
 \item
   Health and Social Care Information Centre, Prescribing (2015):
   \emph{General Practice Prescribing Data Frequently Asked Questions}.
-  Available at:
-  http://content.digital.nhs.uk/media/10048/FAQs-Practice-Level-Prescribingpdf/pdf/PLP\_FAQs\_April\_2015.pdf
+  Available at: http://bit.ly/2tifJNU
 \item
-  NHS (2016): \emph{Beta-blockers}. Available at:
-  http://www.nhs.uk/conditions/beta-blockers/pages/introduction.aspx
+  NHS (2016): \emph{Beta-blockers}. Available at: http://bit.ly/2reDxBL
 \item
   Wikipedia (2016): \emph{View (SQL)}. Available at:
   https://en.wikipedia.org/wiki/View\_(SQL)
 \item
   NHS (2015): \emph{Selective serotonin reuptake inhibitors (SSRIs)}.
-  Available at:
-  http://www.nhs.uk/conditions/SSRIs-(selective-serotonin-reuptake-inhibitors)/Pages/Introduction.aspx
+  Available at: http://bit.ly/1Uym01X
 \end{itemize}
 
 \end{document}

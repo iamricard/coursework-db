@@ -71,4 +71,4 @@ That's all there is to model our data. To recap we have:
 
 [Wikipedia]: https://www.wikiwand.com/en/View_(SQL)
 [about views]: https://mariadb.com/kb/en/mariadb/views/
-[beta-blocker]: http://www.nhs.uk/conditions/beta-blockers/pages/introduction.aspx
+[beta-blocker]: http://bit.ly/2reDxBL

@@ -27,8 +27,8 @@ from that `VIEW` to the `gppatients` table:
 \inputminted[firstline=27,lastline=39]{sql}{src/sql/02-queries.sql}
 
 The practice that has prescribed the most beta-blockers per patient registered
-(in that specific practice) is _Burrswood Nursing Home_, ID `G82651`,
-prescribing 161 beta-blockers per patient.
+(in that specific practice) is **Burrswood Nursing Home**, ID **G82651**,
+prescribing **161** beta-blockers per patient.
 
 ## Prescriptions per medication
 
@@ -43,7 +43,7 @@ the dispensed amount and `LIMIT`ing it to `1` result:
 
 \inputminted[firstline=42,lastline=53]{sql}{src/sql/02-queries.sql}
 
-The most prescribed medication in January + February of 2016 was
+The most prescribed medication in January & February of 2016 was
 **Colecalciferol**, which was prescribed **280495** times.
 
 ## Expenditure per practice
@@ -53,7 +53,7 @@ we need to do is join `spentpergp` with `practices` to get the name, and we are
 done! `spentpergp` is the result of `SUM`ing all `prescriptions` `GROUP`ed `BY`
 their `practiceid`:
 
-\inputminted[firstline=55,lastline=80]{sql}{src/sql/02-queries.sql}
+\inputminted[firstline=56,lastline=80]{sql}{src/sql/02-queries.sql}
 
 The **biggest spender** was **Midlands Medical Partnership** at
 **1,638,640.13£** per patient. The **cheapest practice** was **Cri Bury
@@ -79,6 +79,9 @@ excerpt:
     * sertraline
 
 \inputminted[firstline=92,lastline=102]{sql}{src/sql/02-queries.sql}
+
+The difference between February and January is minimal, at only **486** fewer
+SSRIs prescribed.
 
 ## Metformin per practice
 
