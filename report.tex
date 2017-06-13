@@ -1,0 +1,337 @@
+\documentclass[english,a4paper,]{report}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdftitle={Drug prescription analysis by NHS GPs},
+            pdfauthor={Ricard Solé Casas},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[shorthands=off,main=english]{babel}
+\else
+  \usepackage{polyglossia}
+  \setmainlanguage[]{english}
+\fi
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+% Make links footnotes instead of hotlinks:
+\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{minted}
+\usemintedstyle{autumn}
+
+\usepackage{fontspec}
+\setmonofont{Hasklig}
+\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase,Ligatures=TeX}
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{bchart}
+
+\title{Drug prescription analysis by NHS GPs}
+\author{Ricard Solé Casas}
+\providecommand{\institute}[1]{}
+\institute{Google UK \and Ada National College for Digital Skills}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\vspace*{\fill}
+
+\section*{Summary}
+
+This report contains a brief analysis on drug prescription by NHS GPs
+during the period of January and February of 2016.
+
+\section*{Declaration}
+
+I confirm that the submitted coursework is my own work and that all
+material attributed to others (whether published or unpublished) has
+been clearly identified and fully acknowledged and referred to original
+sources. I agree that the College has the right to submit my work to the
+plagiarism detection service. TurnitinUK for originality checks.
+
+\section*{Acknowledgements}
+
+I'd like to thank my partner Shannon for her continued support and
+challenges that help me grow, both professionally and personally. I
+would also like to thank all of you who also helped me get here.
+
+\vspace*{\fill}
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\chapter{Introduction}\label{introduction}
+
+\chapter{Starting up}\label{starting-up}
+
+For consistency with the lectures the RDMS used is
+\href{https://mariadb.org/}{MariaDB}, a fork of
+\href{https://mysql.com}{MySQL}. The OS is Apple's
+\href{https://www.wikiwand.com/en/MacOS}{OSX}, and the package manager
+to install MariaDB we used for this exercise is
+\href{https://brew.sh}{homebrew}. I chose MariaDB over MySQL because
+I'll be working at Google and that seems to be their fork.
+
+\section{Installing MariaDB}\label{installing-mariadb}
+
+Using the \texttt{brew} command, in our terminal:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{brew}\NormalTok{ --version}
+\ExtensionTok{Homebrew}\NormalTok{ 1.2.2}
+\ExtensionTok{Homebrew/homebrew-core}\NormalTok{ (git revision 73a8655}\KeywordTok{;} \FunctionTok{last}\NormalTok{ commit 2017-06-12)}
+
+\ExtensionTok{brew}\NormalTok{ install mariadb}
+\end{Highlighting}
+\end{Shaded}
+
+We might be prompted to \emph{secure} the \texttt{MySQL/MariaDB} (we
+will use both names interchangeably from now on), this is accomplished
+by following the steps asked in this command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{mysql_secure_installation}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Creating the database}\label{creating-the-database}
+
+With some really simple steps we'll be able to create a database.
+Fortunately, I've create a bash script that will automate the setup on a
+UNIX system. Here, however, we'll describe it step by step.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{mysql}\NormalTok{ -uroot -p}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 78
+Server version: 10.2.6-MariaDB Homebrew
+
+Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> CREATE DATABASE prescriptionsdb;
+Query OK, 1 row affected (0.01 sec)
+\end{verbatim}
+
+\section{Modeling the data}\label{modeling-the-data}
+
+Upon inspection of the data, there are \textbf{four} CSV files. Three of
+them found \href{https://goo.gl/zC3afI}{here} and the last one
+\href{https://goo.gl/n8XbX7}{here}. This maps to also four tables in our
+database. \texttt{practices} ---containing the address, names and
+postcodes of GPs---, \texttt{prescriptions} ---actual prescribed
+medicine, cost, GP, and quantity---, \texttt{gppatients} ---the number
+oh patients, per age, per GP---, and \texttt{chemicals} ---extended
+information on medicaments that are registered by the NHS.
+
+Everything builds on the \texttt{practices} table: both
+\texttt{prescriptions} and \texttt{gppatients} have a
+\texttt{practiceid} field which will be a \texttt{FOREIGN\ KEY}
+reference to the \texttt{practices} table.
+
+\subsection{Create practices table}\label{create-practices-table}
+
+\inputminted[firstline=10,lastline=19]{sql}{src/sql/00-setup.sql}
+
+\subsection{Create prescriptions
+table}\label{create-prescriptions-table}
+
+\inputminted[firstline=21,lastline=34]{sql}{src/sql/00-setup.sql}
+
+\subsubsection{Add FOREIGN KEY
+reference}\label{add-foreign-key-reference}
+
+\inputminted[firstline=36,lastline=36]{sql}{src/sql/00-setup.sql}
+
+\subsection{Create gppatients table}\label{create-gppatients-table}
+
+\inputminted[firstline=43,lastline=46]{sql}{src/sql/00-setup.sql}
+
+\subsubsection{Add FOREIGN KEY
+reference}\label{add-foreign-key-reference-1}
+
+\inputminted[firstline=48,lastline=48]{sql}{src/sql/00-setup.sql}
+
+\subsection{Create chemicals table}\label{create-chemicals-table}
+
+\inputminted[firstline=38,lastline=41]{sql}{src/sql/00-setup.sql}
+
+\section{Wrapping up}\label{wrapping-up}
+
+This does it for scaffolding our database and tables. In the next
+chapter we'll load the CSV files, and create some useful views for
+future queries.
+
+\chapter{Setting up our data}\label{setting-up-our-data}
+
+As described in the previous chapter we'll detail step by step how to
+load the data from the CSV to the MariaDB instance, and into
+\texttt{prescriptionsdb}.
+
+\section{Fetching the data}\label{fetching-the-data}
+
+The data we'll be working with is from 2016, January and February. It is
+provided by the government. The easiest way to fetch it is to
+\texttt{cURL} it from the terminal:
+
+\inputminted[lastline=114]{bash}{setup}
+
+\section{How to load a CSV file}\label{how-to-load-a-csv-file}
+
+MariaDB provides an instruction,
+\texttt{LOAD\ DATA\ {[}LOCAL{]}\ INFILE}, which lets us dump a file into
+a table. You can find more information on how that command works on the
+MariaDB documentation website for
+\href{https://mariadb.com/kb/en/mariadb/load-data-infile/}{\texttt{LOAD\ DATA}}.
+
+\subsection{Usage}\label{usage}
+
+\inputminted[firstline=55,lastline=97]{sql}{src/sql/00-setup.sql}
+
+\section{Creating views}\label{creating-views}
+
+Before moving on to actually querying our data, I found it useful to
+look at the specified tasks and possibly create views that would aid
+said queries. From Wikipedia:
+
+\begin{quote}
+\emph{``In database theory, a view is the result set of a stored query
+on the data, which the database users can query just as they would in a
+persistent database collection object. This pre-established query
+command is kept in the database dictionary.''}
+\end{quote}
+
+You can find more information on what views are on the MariaDB
+documentation website
+\href{https://mariadb.com/kb/en/mariadb/views/}{about views}, or on
+\href{https://www.wikiwand.com/en/View_(SQL)}{Wikipedia}.
+
+\subsection{Beta-blockers}\label{beta-blockers}
+
+One of the first things asked is to identify
+\href{http://www.nhs.uk/conditions/beta-blockers/pages/introduction.aspx}{beta-blocker}
+prescriptions. The NHS Provides with some information in what some
+common beta-blockers are. I found it particularly useful to create a
+view of what prescriptions actually match the chemicals commonly
+identified as beta-blockers.
+
+\inputminted[firstline=4,lastline=23]{sql}{src/sql/01-views.sql}
+
+\subsection{Prescriptions-per-x}\label{prescriptions-per-x}
+
+Other tasks ask for common patterns such as prescriptions/gp, and
+prescriptions/chemical.
+
+\inputminted[firstline=26,lastline=38]{sql}{src/sql/01-views.sql}
+
+\subsection{Other views}\label{other-views}
+
+There are some other views that proved to be necessary/useful as queries
+were being constructed. These will be discussed further with their
+corresponding queries.
+
+\inputminted[firstline=41]{sql}{src/sql/01-views.sql}
+
+\section{Wrapping up}\label{wrapping-up-1}
+
+That's all there is to model our data. To recap we have:
+
+\begin{itemize}
+\tightlist
+\item
+  Downloaded the CSV files into a data folder using cURL.
+\item
+  Loaded the CSV files using \texttt{LOAD\ DATA}
+\item
+  Created some \texttt{VIEW}s that we'll be using later to abstract
+  complexity from our queries.
+\end{itemize}
+
+\end{document}

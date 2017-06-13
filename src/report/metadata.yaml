@@ -4,15 +4,19 @@
     - Google UK
     - Ada National College for Digital Skills
   date: \today
-  title: "Databases"
+  title: "Drug prescription analysis by NHS GPs"
   toc: true
   lang: "en"
   papersize: "a4"
   documentclass: "report"
   geometry: margin=1in
   subparagraph: yes
+  links-as-notes: true
   include-before:
   - \vspace*{\fill}
+  - \section*{Summary}
+  - This report contains a brief analysis on drug prescription by NHS GPs during
+    the period of January and February of 2016.
   - \section*{Declaration}
   - I confirm that the submitted coursework is my own work and that all material
     attributed to others (whether published or unpublished) has been clearly
