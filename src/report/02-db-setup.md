@@ -1,6 +1,6 @@
 # Starting up
 
-For consistency with the lectures the RDMS used is [MariaDB], a fork of
+For consistency with the lectures, the RDMS used is [MariaDB], a fork of
 [MySQL]. The OS is Apple's [OSX], and the package manager to install MariaDB we
 used for this exercise is [homebrew]. I chose MariaDB over MySQL because I'll be
 working at Google and that seems to be their fork.
@@ -27,8 +27,8 @@ mysql_secure_installation
 
 ## Creating the database
 
-With some really simple steps we'll be able to create a database. Fortunately,
-I've create a bash script that will automate the setup on a UNIX system. Here,
+With some really simple steps, we'll be able to create a database. Fortunately,
+I've created a bash script that will automate the setup on a UNIX system. Here,
 however, we'll describe it step by step.
 
 ```sh
@@ -87,7 +87,7 @@ to the `practices` table.
 
 ## Wrapping up
 
-This does it for scaffolding our database and tables. In the next chapter we'll
+This does it for scaffolding our database and tables. In the next chapter, we'll
 load the CSV files, and create some useful views for future queries.
 
 [MariaDB]: https://mariadb.org/

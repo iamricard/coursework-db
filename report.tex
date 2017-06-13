@@ -146,8 +146,8 @@ January and February of the year 2016.
 \section{Tasks}\label{tasks}
 
 We will download and load CSV files containing data for registered
-chemicals, practices, prescriptions and patients over the specified time
-periods.
+chemicals, practices, prescriptions, and patients over the specified
+time periods.
 
 The analysis will cover:
 
@@ -165,16 +165,16 @@ The analysis will cover:
 \section{Further materials and
 remarks}\label{further-materials-and-remarks}
 
-The entire source code for this report in markdown and latex formats,
-and the SQL queries to load data, create views and analyze the data that
-are use in the report are publicly published on
+The entire source code for this report in markdown and latex format and
+the SQL queries to load data, create views and analyze the data that
+used in the report are publicly published on
 \href{https://github.com/rcsole/coursework-db}{Github} under the
 \href{https://choosealicense.com/licenses/mit/}{MIT License}.
 
 \subsection{Running}\label{running}
 
-A utility script is provided in the Github project to \texttt{setup} and
-\texttt{run-queries} on your local machine:
+I provided a utility script in the Github repository to \texttt{setup}
+and\texttt{run-queries} on your local machine:
 
 \begin{quote}
 \textbf{Disclaimer:} \emph{Assumes bash CLI, MariaDB w/ password and a
@@ -189,7 +189,7 @@ working internet connection.}
 
 \chapter{Starting up}\label{starting-up}
 
-For consistency with the lectures the RDMS used is
+For consistency with the lectures, the RDMS used is
 \href{https://mariadb.org/}{MariaDB}, a fork of
 \href{https://mysql.com}{MySQL}. The OS is Apple's
 \href{https://www.wikiwand.com/en/MacOS}{OSX}, and the package manager
@@ -223,9 +223,9 @@ by following the steps asked in this command:
 
 \section{Creating the database}\label{creating-the-database}
 
-With some really simple steps we'll be able to create a database.
-Fortunately, I've create a bash script that will automate the setup on a
-UNIX system. Here, however, we'll describe it step by step.
+With some really simple steps, we'll be able to create a database.
+Fortunately, I've created a bash script that will automate the setup on
+a UNIX system. Here, however, we'll describe it step by step.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -292,7 +292,7 @@ reference}\label{add-foreign-key-reference-1}
 \section{Wrapping up}\label{wrapping-up}
 
 This does it for scaffolding our database and tables. In the next
-chapter we'll load the CSV files, and create some useful views for
+chapter, we'll load the CSV files, and create some useful views for
 future queries.
 
 \chapter{Setting up our data}\label{setting-up-our-data}
@@ -351,8 +351,8 @@ actually match the chemicals commonly identified as beta-blockers.
 
 \subsection{Prescriptions-per-x}\label{prescriptions-per-x}
 
-Other tasks ask for common patterns such as prescriptions per gp, and
-prescriptions per chemical.
+Other tasks ask for common patterns such as prescriptions per practice,
+and prescriptions per chemical.
 
 \inputminted[firstline=26,lastline=38]{sql}{src/sql/01-views.sql}
 
@@ -384,19 +384,19 @@ That's all there is to model our data. To recap we have:
 \section{Practices in a particular
 area}\label{practices-in-a-particular-area}
 
-We are particularly interested in \emph{how} many GPs ---and how many
-registered patients in said GPs--- there are in a specific area covered
-by the NHS ---in N17.
+We are particularly interested in \emph{how} many practices ---and how
+many registered patients in said practices--- there are in a specific
+area covered by the NHS ---in N17.
 
-Getting the amount of GPs is an easy task to accomplish with the
-provided data. From the \texttt{practices} table we want to retrieve the
-rows whose \texttt{postcode} column start with \texttt{N17}. However, we
-also want the patients from that area. That's in the \texttt{gppatients}
-table which relates to \texttt{practices} through the
-\texttt{practiceid} column. In this case we will need a
+Getting the number of practices is an easy task to accomplish with the
+provided data. From the \texttt{practices} table, we want to retrieve
+the rows whose \texttt{postcode} column start with \texttt{N17}.
+However, we also want the patients from that area. That's in the
+\texttt{gppatients} table which relates to \texttt{practices} through
+the \texttt{practiceid} column. In this case, we will need a
 \texttt{LEFT\ JOIN} when combining both tables. The reason we need it to
-be \texttt{LEFT} is because we might find some \texttt{practices} which
-do not have any registered patients but \textbf{are} in the \emph{N17}
+be \texttt{LEFT} is that we might find some \texttt{practices} which do
+not have any registered patients but \textbf{are} in the \emph{N17}
 postcode.
 
 \inputminted[firstline=5,lastline=15]{sql}{src/sql/02-queries.sql}
@@ -458,7 +458,7 @@ was \textbf{Cri Bury Recovery Services} at \textbf{0.17£} per patient.
 
 There are similar \texttt{VIEW}s for
 \href{http://www.nhs.uk/conditions/SSRIs-(selective-serotonin-reuptake-inhibitors)/Pages/Introduction.aspx}{SSRI}
-as there were for beta-blocker. To find the difference in amount of
+as there were for beta-blocker. To find the difference in the amount of
 times SSRIs have been prescribed between January and February we simply
 \texttt{COUNT(*)} and \texttt{GROUP\ BY} the \texttt{period} when they
 were prescribed.
@@ -497,7 +497,7 @@ The difference between February and January is minimal, at only
 
 \section{Metformin per practice}\label{metformin-per-practice}
 
-You guessed it right, we are using \texttt{VIEW}s! In this case
+You guessed it right, we are using \texttt{VIEW}s! In this case,
 \texttt{metforminprescriptions} which builds on \texttt{metformin}. The
 latter gets all the \texttt{bnfcodesub}s belonging to \texttt{chemicals}
 containing \texttt{metformin}. We use the former to \texttt{JOIN} it
@@ -524,7 +524,7 @@ There a few takeaways from the analysis:
 \item
   In order to better understand drug prescription quantity how
   prescriptions are stored needs to be rethought. It's hard to conclude
-  which medicine has been prescribed more overall, or which practice has
+  which medicine has been most prescribed overall, or which practice has
   prescribed the highest \textbf{actual} amount of {[}insert medicine
   here{]}. The chemicals do not carry any information regarding dosage
   in a way that is easily parsable.

@@ -47,7 +47,7 @@ match the chemicals commonly identified as beta-blockers.
 
 ### Prescriptions-per-x
 
-Other tasks ask for common patterns such as prescriptions per gp, and
+Other tasks ask for common patterns such as prescriptions per practice, and
 prescriptions per chemical.
 
 \inputminted[firstline=26,lastline=38]{sql}{src/sql/01-views.sql}

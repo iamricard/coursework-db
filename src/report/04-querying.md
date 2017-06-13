@@ -2,16 +2,18 @@
 
 ## Practices in a particular area
 
-We are particularly interested in _how_ many GPs —and how many registered
-patients in said GPs— there are in a specific area covered by the NHS —in N17.
+We are particularly interested in _how_ many practices —and how many registered
+patients in said practices— there are in a specific area covered by the NHS —in
+N17.
 
-Getting the amount of GPs is an easy task to accomplish with the provided data.
-From the `practices` table we want to retrieve the rows whose `postcode` column
-start with `N17`. However, we also want the patients from that area. That's in
-the `gppatients` table which relates to `practices` through the `practiceid`
-column. In this case we will need a `LEFT JOIN` when combining both tables. The
-reason we need it to be `LEFT` is because we might find some `practices` which
-do not have any registered patients but **are** in the _N17_ postcode.
+Getting the number of practices is an easy task to accomplish with the provided
+data. From the `practices` table, we want to retrieve the rows whose `postcode`
+column start with `N17`. However, we also want the patients from that area.
+That's in the `gppatients` table which relates to `practices` through the
+`practiceid` column. In this case, we will need a `LEFT JOIN` when combining
+both tables. The reason we need it to be `LEFT` is that we might find some
+`practices` which do not have any registered patients but **are** in the _N17_
+postcode.
 
 \inputminted[firstline=5,lastline=15]{sql}{src/sql/02-queries.sql}
 
@@ -62,9 +64,9 @@ Recovery Services** at **0.17£** per patient.
 ## SSRI prescriptions change
 
 There are similar `VIEW`s for [SSRI] as there were for beta-blocker. To find
-the difference in amount of times SSRIs have been prescribed between January
-and February we simply `COUNT(*)` and `GROUP BY` the `period` when they were
-prescribed.
+the difference in the amount of times SSRIs have been prescribed between
+January and February we simply `COUNT(*)` and `GROUP BY` the `period` when they
+were prescribed.
 
 To know what qualifies as SSRI we've referred to the NHS website. The relevant
 excerpt:
@@ -85,12 +87,12 @@ SSRIs prescribed.
 
 ## Metformin per practice
 
-You guessed it right, we are using `VIEW`s! In this case
+You guessed it right, we are using `VIEW`s! In this case,
 `metforminprescriptions` which builds on `metformin`. The latter gets all the
-`bnfcodesub`s belonging to `chemicals` containing `metformin`. We use the former
-to `JOIN` it with `practices` on the `practiceid = id` and `GROUP BY` the `id`,
-while also `ORDER`ing `BY` the amount of `prescriptions` and finally `LIMIT` it
-to `10` elements:
+`bnfcodesub`s belonging to `chemicals` containing `metformin`. We use the
+former to `JOIN` it with `practices` on the `practiceid = id` and `GROUP BY`
+the `id`, while also `ORDER`ing `BY` the amount of `prescriptions` and finally
+`LIMIT` it to `10` elements:
 
 \inputminted[firstline=107]{sql}{src/sql/02-queries.sql}
 

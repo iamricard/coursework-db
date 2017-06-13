@@ -9,7 +9,7 @@ February of the year 2016.
 ## Tasks
 
 We will download and load CSV files containing data for registered chemicals,
-practices, prescriptions and patients over the specified time periods.
+practices, prescriptions, and patients over the specified time periods.
 
 The analysis will cover:
 
@@ -20,13 +20,13 @@ The analysis will cover:
 
 ## Further materials and remarks
 
-The entire source code for this report in markdown and latex formats, and the
-SQL queries to load data, create views and analyze the data that are use in the
-report are publicly published on [Github] under the [MIT License].
+The entire source code for this report in markdown and latex format and the SQL
+queries to load data, create views and analyze the data that used in the report
+are publicly published on [Github] under the [MIT License].
 
 ### Running
 
-A utility script is provided in the Github project to `setup` and `run-queries`
+I provided a utility script in the Github repository to `setup` and`run-queries`
 on your local machine:
 
 > **Disclaimer:** _Assumes bash CLI, MariaDB w/ password and a working internet

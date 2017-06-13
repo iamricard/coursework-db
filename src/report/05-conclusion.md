@@ -4,7 +4,7 @@ There a few takeaways from the analysis:
 
 * In order to better understand drug prescription quantity how prescriptions
   are stored needs to be rethought. It's hard to conclude which medicine has
-  been prescribed more overall, or which practice has prescribed the highest
+  been most prescribed overall, or which practice has prescribed the highest
   **actual** amount of [insert medicine here]. The chemicals do not carry any
   information regarding dosage in a way that is easily parsable.
 
