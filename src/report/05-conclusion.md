@@ -14,8 +14,8 @@ There a few takeaways from the analysis:
   lot of people needing them. At a whooping 161 bb/p they are leading the
   charge on that type of drug.
 
-* We can see massive gaps on money spent per patient, it ranges from _0.17£_ to
-  over _1M£_.
+* We can see massive gaps on money spent per patient, it ranges from _0.013£_ to
+  over _7609£_.
 
 * As far as SSRIs go, the fluctuation between months seems to be minimal (less
   than 1%).

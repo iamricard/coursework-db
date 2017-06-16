@@ -53,31 +53,39 @@ LIMIT 1;
 -- +----------------+-----------------+
 
 -- d) Which practice spent the most and the least per patient?
-SELECT practicename,
-       spent
-FROM spentpergp
-INNER JOIN practices ON id = practiceid
-ORDER BY spent DESC
+SELECT spentperpatient,
+       practicename
+FROM
+  (SELECT spent / patientcount AS spentperpatient,
+          spentpergp.practiceid
+   FROM spentpergp
+   INNER JOIN gppatients ON gppatients.practiceid = spentpergp.practiceid) AS spp
+INNER JOIN practices ON spp.practiceid = practices.id
+ORDER BY spentperpatient DESC
 LIMIT 1;
 
--- +------------------------------+--------------------+
--- | practicename                 | spent              |
--- +------------------------------+--------------------+
--- | MIDLANDS MEDICAL PARTNERSHIP | 1638640.1302093118 |
--- +------------------------------+--------------------+
+-- +-------------------+------------------------+
+-- | spentperpatient   | practicename           |
+-- +-------------------+------------------------+
+-- | 7609.050047278404 | BURRSWOOD NURSING HOME |
+-- +-------------------+------------------------+
 
-SELECT practicename,
-       spent
-FROM spentpergp
-INNER JOIN practices ON id = practiceid
-ORDER BY spent ASC
+SELECT spentperpatient,
+       practicename
+FROM
+  (SELECT spent / patientcount AS spentperpatient,
+          spentpergp.practiceid
+   FROM spentpergp
+   INNER JOIN gppatients ON gppatients.practiceid = spentpergp.practiceid) AS spp
+INNER JOIN practices ON spp.practiceid = practices.id
+ORDER BY spentperpatient ASC
 LIMIT 1;
 
--- +------------------------------+---------------------+
--- | practicename                 | spent               |
--- +------------------------------+---------------------+
--- | CRI BURY RECOVERY SERVICES   | 0.17000000178813934 |
--- +------------------------------+---------------------+
+-- +----------------------+------------------------------------------+
+-- | spentperpatient      | practicename                             |
+-- +----------------------+------------------------------------------+
+-- | 0.013433942387335699 | SCHOOL LANE PMS PRACTICE                 |
+-- +----------------------+------------------------------------------+
 
 -- e) What was the difference in selective serotonin reuptake inhibitor
 --    prescriptions between January and February?

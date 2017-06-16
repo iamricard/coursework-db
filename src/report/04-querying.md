@@ -55,11 +55,11 @@ we need to do is join `spentpergp` with `practices` to get the name, and we are
 done! `spentpergp` is the result of `SUM`ing all `prescriptions` `GROUP`ed `BY`
 their `practiceid`:
 
-\inputminted[firstline=56,lastline=80]{sql}{src/sql/02-queries.sql}
+\inputminted[firstline=56,lastline=88]{sql}{src/sql/02-queries.sql}
 
-The **biggest spender** was **Midlands Medical Partnership** at
-**1,638,640.13£** per patient. The **cheapest practice** was **Cri Bury
-Recovery Services** at **0.17£** per patient.
+The **biggest spender** was **Burrswood Nursing Home** at **7609.05£** per
+patient. The **cheapest practice** was **School Lane PMS Practice** at
+**0.013£** per patient.
 
 ## SSRI prescriptions change
 
@@ -80,7 +80,7 @@ excerpt:
     * paroxetine
     * sertraline
 
-\inputminted[firstline=92,lastline=102]{sql}{src/sql/02-queries.sql}
+\inputminted[firstline=100,lastline=110]{sql}{src/sql/02-queries.sql}
 
 The difference between February and January is minimal, at only **486** fewer
 SSRIs prescribed.
@@ -94,7 +94,7 @@ former to `JOIN` it with `practices` on the `practiceid = id` and `GROUP BY`
 the `id`, while also `ORDER`ing `BY` the amount of `prescriptions` and finally
 `LIMIT` it to `10` elements:
 
-\inputminted[firstline=107]{sql}{src/sql/02-queries.sql}
+\inputminted[firstline=115]{sql}{src/sql/02-queries.sql}
 
 The above comment shows a nicely formatted table of the **top 10** `practices`
 per metformin prescribed.

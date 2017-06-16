@@ -448,11 +448,11 @@ Like in every other query we also have a relevant view here,
 is the result of \texttt{SUM}ing all \texttt{prescriptions}
 \texttt{GROUP}ed \texttt{BY} their \texttt{practiceid}:
 
-\inputminted[firstline=56,lastline=80]{sql}{src/sql/02-queries.sql}
+\inputminted[firstline=56,lastline=88]{sql}{src/sql/02-queries.sql}
 
-The \textbf{biggest spender} was \textbf{Midlands Medical Partnership}
-at \textbf{1,638,640.13£} per patient. The \textbf{cheapest practice}
-was \textbf{Cri Bury Recovery Services} at \textbf{0.17£} per patient.
+The \textbf{biggest spender} was \textbf{Burrswood Nursing Home} at
+\textbf{7609.05£} per patient. The \textbf{cheapest practice} was
+\textbf{School Lane PMS Practice} at \textbf{0.013£} per patient.
 
 \section{SSRI prescriptions change}\label{ssri-prescriptions-change}
 
@@ -490,7 +490,7 @@ relevant excerpt:
   \end{itemize}
 \end{itemize}
 
-\inputminted[firstline=92,lastline=102]{sql}{src/sql/02-queries.sql}
+\inputminted[firstline=100,lastline=110]{sql}{src/sql/02-queries.sql}
 
 The difference between February and January is minimal, at only
 \textbf{486} fewer SSRIs prescribed.
@@ -506,7 +506,7 @@ with \texttt{practices} on the \texttt{practiceid\ =\ id} and
 \texttt{BY} the amount of \texttt{prescriptions} and finally
 \texttt{LIMIT} it to \texttt{10} elements:
 
-\inputminted[firstline=107]{sql}{src/sql/02-queries.sql}
+\inputminted[firstline=115]{sql}{src/sql/02-queries.sql}
 
 The above comment shows a nicely formatted table of the \textbf{top 10}
 \texttt{practices} per metformin prescribed.
@@ -536,7 +536,7 @@ There a few takeaways from the analysis:
   they are leading the charge on that type of drug.
 \item
   We can see massive gaps on money spent per patient, it ranges from
-  \emph{0.17£} to over \emph{1M£}.
+  \emph{0.013£} to over \emph{7609£}.
 \item
   As far as SSRIs go, the fluctuation between months seems to be minimal
   (less than 1\%).
